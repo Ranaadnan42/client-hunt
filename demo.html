@@ -137,7 +137,7 @@ html[lang=ur] .ofb h3{line-height:1.9}
 .gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:16px}
 .gal figure{overflow:hidden;border-radius:20px;position:relative;cursor:zoom-in}
 .gal figure:nth-child(1){grid-column:span 2;grid-row:span 2}
-.gal figure:nth-child(4){grid-column:span 2}
+.gal figure:nth-child(n+4){grid-column:span 2}
 .gal img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .gal figure:hover img{transform:scale(1.08)}
 .lb{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;place-items:center;z-index:90;padding:30px}
@@ -189,7 +189,7 @@ footer .brand{color:#fff}
  .links.open{display:flex;position:absolute;top:78px;inset-inline:0;flex-direction:column;background:#fff;color:var(--ink);padding:20px 24px;gap:6px;box-shadow:0 20px 40px -20px rgba(0,0,0,.3)}
  .grid{grid-template-columns:1fr 1fr}.ab,.faqw,.cw{grid-template-columns:1fr;gap:40px}
  .pics{height:420px}.gal{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
- .gal figure:nth-child(4){grid-column:span 1}
+ .gal figure:nth-child(n+4){grid-column:span 1}
 }
 @media (max-width:620px){
  section{padding:80px 0}.grid,.pts,.info{grid-template-columns:1fr}
@@ -233,7 +233,14 @@ const LAB = {
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const id = (location.pathname.match(/\/d\/([a-z0-9]+)/i) || [])[1] || new URLSearchParams(location.search).get("id");
 
-function img(cat, n){ return IMG + cat + "/" + n + ".jpg"; }
+// har category ki tasveerain - pehli hero, phir about, phir gallery (sirf chuni hui achhi tasveerain)
+const ORD = {auto:[6,4,3,2,5,1],bakery:[3,5,2,4,6,1],business:[6,2,4,3,5,1],cafe:[1,6,2,4,5,3],clinic:[2,5,3,6,1,4],
+  construction:[2,1,4,5],education:[2,5,3,6],electronics:[1,2,3,5,4,6],fashion:[5,1,4,3,2,6],furniture:[5,6,2,3,4,1],
+  grocery:[1,6,2,4,3,5],gym:[4,6,3,1],hotel:[2,1,6,4,5,3],jewellery:[4,2,1,3],pharmacy:[2,1,3,5,4,6],
+  realestate:[2,4,5,6,1,3],restaurant:[2,4,5,6,3,1],salon:[1,2,6,3,5,4],travel:[5,4,2,1,6,3]};
+function img(cat, k){ const o = ORD[cat] || [1,2,3,4,5,6]; return IMG + cat + "/" + o[(k - 1) % o.length] + ".jpg"; }
+function gallery(cat){ const o = ORD[cat] || [1,2,3,4,5,6]; const n = o.length >= 6 ? 6 : 4;
+  return Array.from({length:n}, (_, i) => IMG + cat + "/" + o[(i + 1) % o.length] + ".jpg"); }
 function icon(n){ return `<i data-lucide="${esc(n)}"></i>`; }
 
 function render(c, cat){
@@ -284,7 +291,7 @@ function render(c, cat){
   <section class="offer"><div class="wrap"><div class="ofb rv"><div><h3>${esc(c.offer_title)}</h3><p>${esc(c.offer_text)}</p></div><a href="#contact" class="btn">${esc(c.cta_primary)} ${icon("arrow-up-right")}</a></div></div></section>
   <section id="gallery"><div class="wrap">
     <div class="head"><div><span class="kicker rv">${esc(N.gallery)}</span><h2 class="h2 rv d1">${esc(c.gallery_title)}</h2></div></div>
-    <div class="gal">${[1,4,5,2,6,3].map((n,i)=>`<figure class="rv d${i%3+1}"><img src="${img(cat,n)}" alt="" loading="lazy"></figure>`).join("")}</div>
+    <div class="gal">${gallery(cat).map((u,i)=>`<figure class="rv d${i%3+1}"><img src="${u}" alt="" loading="lazy"></figure>`).join("")}</div>
   </div></section>
   <section id="faq" style="background:#fff"><div class="wrap faqw">
     <div><span class="kicker rv">${esc(N.faq)}</span><h2 class="h2 rv d1">${esc(c.faq_title)}</h2><p class="sub rv d2">${esc(c.contact_text)}</p></div>
