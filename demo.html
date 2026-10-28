@@ -181,7 +181,7 @@ footer .brand{color:#fff}
 .toast a{background:#25d366;color:#05250f;font-weight:700;padding:8px 14px;border-radius:99px;white-space:nowrap}
 
 .rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
-.rv.in{opacity:1;transform:none}
+.rv.shown{opacity:1;transform:none}
 .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
 
 @media (max-width:960px){
@@ -194,7 +194,8 @@ footer .brand{color:#fff}
 @media (max-width:620px){
  section{padding:80px 0}.grid,.pts,.info{grid-template-columns:1fr}
  .stats{position:static;margin-top:-20px;padding-bottom:30px}.hero{flex-direction:column;justify-content:center}
- .hero .in{padding:140px 0 50px}.stats .row{grid-template-columns:repeat(3,1fr)}.stat{padding:14px}.stat b{font-size:20px}.stat span{font-size:12px}
+ .hero .in{padding:140px 0 50px}
+ .hero:before,html[dir=rtl] .hero:before{background:linear-gradient(180deg,color-mix(in srgb,var(--dark) 55%,transparent) 0%,color-mix(in srgb,var(--dark) 88%,transparent) 55%,var(--dark) 100%)}.stats .row{grid-template-columns:repeat(3,1fr)}.stat{padding:14px}.stat b{font-size:20px}.stat span{font-size:12px}
  .ofb{padding:44px 28px}.pics{height:340px}form{padding:24px}
 }
 </style>
@@ -320,7 +321,7 @@ function render(c, cat){
   document.querySelectorAll("#lk a").forEach(a => a.onclick = () => document.getElementById("lk").classList.remove("open"));
   const hd = document.getElementById("hd");
   const onS = () => hd.classList.toggle("solid", scrollY > 60); addEventListener("scroll", onS, {passive:true}); onS();
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.12});
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("shown"); io.unobserve(e.target); } }), {threshold:.12});
   document.querySelectorAll(".rv").forEach(el => io.observe(el));
   document.querySelectorAll("img").forEach(i => i.onerror = () => { if (!i.dataset.f) { i.dataset.f = 1; i.src = img("business", 1 + Math.floor(Math.random()*6)); } });
 }
