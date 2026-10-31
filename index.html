@@ -146,6 +146,19 @@
   input.addEventListener("keydown", (e) => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); form.requestSubmit(); } });
   quick.addEventListener("click", (e) => { const chip=e.target.closest(".chip"); if(chip) send(chip.textContent); });
   input.focus();
+
+  // Visitor count (admin panel ke liye) + chhupa admin button: WB logo par 5 dafa jaldi tap
+  (function(){
+    const API = "https://fobzocsluzwcqretshnm.supabase.co/functions/v1/admin";
+    let vid = ""; try { vid = localStorage.getItem("wb_vid") || ""; if (!vid) { vid = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("wb_vid", vid); } } catch {}
+    try { fetch(API, { method:"POST", headers:{ "Content-Type":"application/json" }, keepalive:true,
+      body: JSON.stringify({ action:"track", page: location.pathname, ref: document.referrer, tz: Intl.DateTimeFormat().resolvedOptions().timeZone, lang: navigator.language, vid }) }); } catch {}
+    let taps = 0, timer;
+    document.querySelector(".logo").addEventListener("click", () => {
+      taps++; clearTimeout(timer); timer = setTimeout(() => taps = 0, 1500);
+      if (taps >= 5) location.href = "/admin";
+    });
+  })();
 </script>
 </body>
 </html>
