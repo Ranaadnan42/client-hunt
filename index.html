@@ -151,7 +151,8 @@
   (function(){
     const API = "https://fobzocsluzwcqretshnm.supabase.co/functions/v1/admin";
     let vid = ""; try { vid = localStorage.getItem("wb_vid") || ""; if (!vid) { vid = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("wb_vid", vid); } } catch {}
-    try { fetch(API, { method:"POST", headers:{ "Content-Type":"application/json" }, keepalive:true,
+    let owner = false; try { owner = !!localStorage.getItem("wb_owner"); } catch {}
+    if (!owner) try { fetch(API, { method:"POST", headers:{ "Content-Type":"application/json" }, keepalive:true,
       body: JSON.stringify({ action:"track", page: location.pathname, ref: document.referrer, tz: Intl.DateTimeFormat().resolvedOptions().timeZone, lang: navigator.language, vid }) }); } catch {}
     let taps = 0, timer;
     document.querySelector(".logo").addEventListener("click", () => {

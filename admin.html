@@ -111,7 +111,7 @@
     </div>
     <div id="chats"></div>
 
-    <h2>Demo websites jo customers ne kholi</h2>
+    <h2>Demo websites — bot ne kitni banayi, kis ne kholi</h2>
     <div id="demos"></div>
 
     <h2>Email par jawab dene wale</h2>
@@ -130,6 +130,7 @@
   const store = { get(){ try { return localStorage.getItem(KEY) || ""; } catch { return ""; } },
     set(v){ try { localStorage.setItem(KEY, v); } catch {} }, del(){ try { localStorage.removeItem(KEY); } catch {} } };
   let PASS = store.get();
+  try { localStorage.setItem("wb_owner", "1"); } catch {}
 
   const CH = { website: "🌐 Website chat", whatsapp: "🟢 WhatsApp", messenger: "💬 Messenger", facebook: "📘 Facebook comment",
     "facebook-comment": "📘 Facebook comment", email: "✉️ Email" };
@@ -215,15 +216,17 @@
   }
 
   function renderDemos(){
-    const d = DATA.demos;
-    if (!d.length) { $("demos").innerHTML = `<div class="card empty">Abhi kisi customer ne demo nahi kholi.</div>`; return; }
-    $("demos").innerHTML = d.map((x) => {
+    const d = DATA.demos, dc = DATA.demoCounts || { made: d.length, opened: d.filter((x) => x.views > 0).length };
+    const src = (s) => /^email/.test(s || "") ? "✉️ Email" : /^wa/.test(s || "") ? "📲 WhatsApp/FB list" : /^chat/.test(s || "") ? "🌐 Website chat" : "—";
+    const head = `<div class="tiles" style="margin-bottom:10px">${tile(dc.made, "Ab tak demo websites banayi")}${tile(dc.opened, "Customers ne kholi", "hot")}</div>`;
+    if (!d.length) { $("demos").innerHTML = head + `<div class="card empty">Abhi koi demo nahi bani.</div>`; return; }
+    $("demos").innerHTML = head + [...d].sort((a, b) => (b.views > 0) - (a.views > 0)).map((x) => {
       const l = x.lead || {}, b = [];
       if (l.phone) b.push(`<a class="btn wa" target="_blank" rel="noopener" href="${waLink(String(l.phone).split(/[;,]/)[0])}">WhatsApp</a>`);
       if (l.email) b.push(`<a class="btn" href="mailto:${esc(l.email)}">Email</a>`);
       if (l.social) b.push(`<a class="btn fb" target="_blank" rel="noopener" href="${esc(/^http/.test(l.social) ? l.social : "https://" + l.social)}">Page</a>`);
-      return `<div class="card chat"><div class="chat-top"><span class="who">${esc(x.business)}</span><span class="badge b-hot">👀 ${x.views} dafa dekhi</span>
-        <span class="when">${esc(x.city || "")} · ${ago(x.created_at)}</span></div>
+      return `<div class="card chat"><div class="chat-top"><span class="who">${esc(x.business)}</span>${x.views > 0 ? `<span class="badge b-hot">👀 Customer ne ${x.views} dafa dekhi</span>` : `<span class="badge b-cold">Abhi nahi kholi</span>`}
+        <span class="when">${src(x.source)} · ${esc(x.city || "")} · ${ago(x.created_at)}</span></div>
         <div class="actions">${b.join("")}<a class="btn" target="_blank" rel="noopener" href="${x.url}">Demo dekhein</a></div></div>`;
     }).join("");
   }

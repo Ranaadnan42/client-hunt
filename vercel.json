@@ -1,9 +1,27 @@
 {
   "rewrites": [
-    { "source": "/d/:id", "destination": "/demo.html" },
-    { "source": "/admin", "destination": "/admin.html" }
+    {
+      "source": "/d/:id",
+      "destination": "/demo.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/send",
+      "destination": "/send.html"
+    }
   ],
   "headers": [
-    { "source": "/admin(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
+    {
+      "source": "/(admin|send)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
   ]
 }

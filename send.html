@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ur">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Message bhejein</title>
+<style>
+  :root{--bg:#f4f6f8;--surface:#fff;--ink:#11201f;--soft:#52635f;--line:#dde5e6;--fb:#1877f2;--ig:#c13584;--wa:#25936b;--ok:#15803d}
+  @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0c1413;--surface:#111c1b;--ink:#e8efee;--soft:#9fb2ae;--line:#223432;--fb:#5b9bff;--ig:#e0559f;--wa:#30b981;--ok:#4ade80;color-scheme:dark}}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Segoe UI,Roboto,Manrope,sans-serif;font-size:16px;line-height:1.5}
+  .wrap{max-width:520px;margin:0 auto;padding:20px 16px 40px}
+  h1{font-size:20px;margin:0 0 4px} .soft{color:var(--soft);font-size:14px}
+  .msg{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;margin:14px 0;max-height:40vh;overflow:auto}
+  .go{display:block;width:100%;border:none;border-radius:14px;padding:16px;font:inherit;font-weight:700;font-size:17px;color:#fff;cursor:pointer;background:var(--fb)}
+  .steps{margin:16px 0 0;padding-left:20px;color:var(--soft);font-size:14px}
+  .ok{color:var(--ok);font-weight:700;margin-top:10px;min-height:22px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">Load ho raha hai…</h1>
+  <div class="soft" id="sub"></div>
+  <div class="msg" id="msg"></div>
+  <button class="go" id="go" hidden>Message copy karein aur kholein</button>
+  <div class="ok" id="ok"></div>
+  <ol class="steps" id="steps" hidden>
+    <li>Upar wala button dabayein: message copy ho jayega aur app khulegi.</li>
+    <li>Chat mein likhne ki jagah par ungli daba kar rakhein → <b>Paste</b>.</li>
+    <li><b>Send</b> dabayein. Bas!</li>
+  </ol>
+</div>
+<script>
+  try { localStorage.setItem("wb_owner", "1"); } catch {}
+  const q = new URLSearchParams(location.search);
+  const API = "https://fobzocsluzwcqretshnm.supabase.co/functions/v1/wa-outreach?msg=" + encodeURIComponent(q.get("id") || "") + "&k=" + encodeURIComponent(q.get("k") || "");
+  const $ = (id) => document.getElementById(id);
+  let D = null;
+  async function copy(t){
+    try { await navigator.clipboard.writeText(t); return true; } catch {}
+    try { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return ok; } catch { return false; }
+  }
+  fetch(API).then((r) => r.json()).then((d) => {
+    if (d.error) throw new Error(d.error);
+    D = d;
+    $("title").textContent = d.name;
+    $("sub").textContent = d.sent ? "✅ Ise pehle message bheja ja chuka hai." : d.app + " par message bhejna hai";
+    $("msg").textContent = d.message;
+    const btn = $("go");
+    btn.textContent = "📋 Message copy karein aur " + d.app + " kholein";
+    btn.style.background = d.app === "Instagram" ? "var(--ig)" : d.app === "WhatsApp" ? "var(--wa)" : "var(--fb)";
+    btn.hidden = false; $("steps").hidden = false;
+  }).catch(() => { $("title").textContent = "Link kaam nahi kar raha"; $("sub").textContent = "Email wala button dobara dabayein."; });
+  $("go").onclick = async () => {
+    const ok = await copy(D.message);
+    $("ok").textContent = ok ? "✅ Message copy ho gaya — ab Paste karke Send dabayein" : "Message ko upar se khud select karke copy karein";
+    fetch(API + "&mark=1").catch(() => {});
+    if (D.url) setTimeout(() => { location.href = D.url; }, 600);
+  };
+</script>
+</body>
+</html>

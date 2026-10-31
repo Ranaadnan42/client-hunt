@@ -337,7 +337,8 @@ function render(c, cat){
   const ld = document.getElementById("loader");
   try {
     if (!id) throw new Error("no id");
-    const r = await fetch(API + "?id=" + encodeURIComponent(id));
+    let me = ""; try { if (localStorage.getItem("wb_owner")) me = "&me=1"; } catch {}
+    const r = await fetch(API + "?id=" + encodeURIComponent(id) + me);
     const j = await r.json();
     if (!j.content) throw new Error("not found");
     const cat = j.category || j.content.category || "business";
@@ -349,8 +350,9 @@ function render(c, cat){
   }
   ld.classList.add("hide"); setTimeout(() => ld.remove(), 700);
 })();
-// Visitor count (admin panel ke liye)
+// Visitor count (admin panel ke liye) — Rana khud dekhe to ginti nahi
 (function(){
+  try { if (localStorage.getItem("wb_owner")) return; } catch {}
   let vid = ""; try { vid = localStorage.getItem("wb_vid") || ""; if (!vid) { vid = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("wb_vid", vid); } } catch {}
   try { fetch("https://fobzocsluzwcqretshnm.supabase.co/functions/v1/admin", { method:"POST", headers:{ "Content-Type":"application/json" }, keepalive:true,
     body: JSON.stringify({ action:"track", page: location.pathname, ref: document.referrer, tz: Intl.DateTimeFormat().resolvedOptions().timeZone, lang: navigator.language, vid }) }); } catch {}
