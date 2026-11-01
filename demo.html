@@ -244,7 +244,7 @@ const ORD = {auto:[6,4,3,2,5,1],bakery:[3,5,2,4,6,1],business:[6,2,4,3,5,1],cafe
 let PICS = null;   // is business ki apni photos (Pexels) - na hon to category wali
 function img(cat, k){ if (PICS && PICS.length) return PICS[(k - 1) % PICS.length];
   const o = ORD[cat] || [1,2,3,4,5,6]; return IMG + cat + "/" + o[(k - 1) % o.length] + ".jpg"; }
-function gallery(cat){ if (PICS && PICS.length >= 4) { const g = PICS.slice(3); while (g.length < 6) g.push(PICS[g.length % PICS.length]); return g.slice(0, 6); }
+function gallery(cat){ if (PICS && PICS.length >= 4) { const n = PICS.length >= 6 ? 6 : 4, st = PICS.length >= 9 ? 3 : 0; return PICS.slice(st, st + n); }
   const o = ORD[cat] || [1,2,3,4,5,6]; const n = o.length >= 6 ? 6 : 4;
   return Array.from({length:n}, (_, i) => IMG + cat + "/" + o[(i + 1) % o.length] + ".jpg"); }
 const RTL = ["ar","ur","fa","he"];
