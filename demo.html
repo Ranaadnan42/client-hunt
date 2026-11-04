@@ -269,7 +269,7 @@ function render(c, cat){
   const svc = (c.services||[]).slice(0,6);
   const mq = svc.map(s => `<span>${esc(s.title)}</span>`).join("");
   document.getElementById("app").innerHTML = `
-  <div class="ribbon" id="rib"><span>${L.rib.replace("{b}", b)}</span><a href="${wa}" target="_blank" rel="noopener">${L.get}</a><button class="x" onclick="this.parentNode.remove()">×</button></div>
+  <div class="ribbon" id="rib"><span>${L.rib.replace("{b}", b)}</span><a href="${wa}" target="_blank" rel="noopener">${L.get}</a><a href="/app/${esc(id)}" style="background:#fff;color:#111">📱 ${({ar:"شاهد التطبيق",ur:"ایپ ڈیمو دیکھیں"})[c.lang] || "See your app demo"}</a><button class="x" onclick="this.parentNode.remove()">×</button></div>
   <header id="hd"><div class="wrap nav">
     <a href="#top" class="brand"><span class="mono">${esc(initials)}</span>${b}</a>
     <nav class="links" id="lk"><a href="#top">${esc(N.home)}</a><a href="#services">${esc(N.services)}</a><a href="#about">${esc(N.about)}</a><a href="#gallery">${esc(N.gallery)}</a><a href="#faq">${esc(N.faq)}</a><a href="#contact">${esc(N.contact)}</a></nav>
