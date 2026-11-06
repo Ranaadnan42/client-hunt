@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/ap/:id",
+      "destination": "/ap.html"
+    },
+    {
       "source": "/d/:id",
       "destination": "/demo.html"
     },

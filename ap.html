@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your free social media demo · Web Builder AutoPilot AI</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f14;--card:#161a22;--line:#262c38;--text:#f3f5f9;--muted:#9aa3b5;--accent:#ffcc33;--wa:#25d366}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:16px/1.55 'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+[dir=rtl] body,[dir=rtl] button,[dir=rtl] input{font-family:'Noto Kufi Arabic','Plus Jakarta Sans',sans-serif}
+a{color:inherit}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.brand{font-weight:800;letter-spacing:-.02em}.brand span{color:var(--accent)}
+.pill{font-size:13px;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:99px}
+.hero{padding:26px 0 8px}
+.hero small{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:12px}
+.hero h1{font-size:clamp(28px,6vw,46px);line-height:1.1;letter-spacing:-.03em;margin:10px 0 12px}
+.hero p{color:var(--muted);max-width:620px}
+.grid{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:22px;margin:28px 0}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.phone{background:#000;border-radius:28px;padding:8px;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.5);max-width:340px;width:100%;margin:0 auto}
+.phone video{width:100%;aspect-ratio:9/16;border-radius:22px;display:block;background:#111;object-fit:cover}
+.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--card);border:1px solid var(--line);padding:4px 10px;border-radius:99px;margin-bottom:10px}
+.posts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.posts img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:14px;border:1px solid var(--line);display:block}
+.cap{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px;font-size:14px;color:#d6dbe5;white-space:pre-wrap}
+h2{font-size:24px;letter-spacing:-.02em;margin:40px 0 14px}
+.plats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:760px){.plats{grid-template-columns:1fr 1fr}}
+.plat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.plat b{display:block;margin:8px 0 2px}.plat span{color:var(--muted);font-size:13px}
+.ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:760px){.steps{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.step i{font-style:normal;color:var(--accent);font-weight:800}
+.step p{color:var(--muted);font-size:14px;margin-top:4px}
+.cta{margin:40px 0 30px;background:linear-gradient(135deg,#1d2230,#151922);border:1px solid var(--line);border-radius:22px;padding:26px;text-align:center}
+.cta h3{font-size:26px;letter-spacing:-.02em}.cta p{color:var(--muted);margin:6px 0 18px}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{border:0;cursor:pointer;font:700 15px inherit;padding:13px 20px;border-radius:99px;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn.y{background:var(--accent);color:#1b1500}.btn.g{background:var(--wa);color:#04210d}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 0 90px}
+/* chat */
+#chatBtn{position:fixed;bottom:18px;inset-inline-end:18px;z-index:9;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#chat{position:fixed;bottom:80px;inset-inline-end:18px;width:min(380px,calc(100vw - 32px));height:min(520px,calc(100vh - 120px));background:#fff;color:#111;border-radius:18px;display:none;flex-direction:column;overflow:hidden;z-index:10;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#chat.open{display:flex}
+#chat header{background:#111;color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+#chat header button{background:none;border:0;color:#fff;font-size:20px;cursor:pointer}
+#msgs{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f4f5f7}
+.m{max-width:85%;padding:9px 12px;border-radius:14px;font-size:14px;white-space:pre-wrap;word-wrap:break-word}
+.m.u{align-self:flex-end;background:#111;color:#fff}.m.b{align-self:flex-start;background:#fff;border:1px solid #e3e5ea}
+#chat form{display:flex;border-top:1px solid #e3e5ea}
+#chat input{flex:1;border:0;padding:13px;font:15px inherit;outline:none}
+#chat form button{border:0;background:#111;color:#fff;padding:0 16px;font-weight:700;cursor:pointer}
+#load{min-height:100vh;display:grid;place-items:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="load">Loading your demo…</div>
+<div id="app" hidden></div>
+<button id="chatBtn" class="btn y" hidden>💬 <span id="chatLbl">Ask us anything</span></button>
+<div id="chat" role="dialog" aria-label="Chat">
+  <header><span id="chatHead">Web Builder</span><button id="chatX" aria-label="Close">×</button></header>
+  <div id="msgs"></div>
+  <form id="chatF"><input id="chatI" autocomplete="off" placeholder="Type your message…"><button id="chatS">Send</button></form>
+</div>
+<script>
+const API = "https://fobzocsluzwcqretshnm.supabase.co/functions/v1/autopilot";
+const CHAT = "https://fobzocsluzwcqretshnm.supabase.co/functions/v1/ai-chat";
+const WA = "923075267349";
+const id = location.pathname.split("/").filter(Boolean).pop();
+const me = new URLSearchParams(location.search).get("me") === "1" ? "&me=1" : "";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const T = {
+ en:{kicker:"Free demo · made for you", h:"Your social media, posted for you every day — {b}",
+  p:"We made this reel and two posts from photos on your own website, just to show you what our AI system can do for {b}. No strings attached.",
+  reel:"Your reel", posts:"Your posts", cap:"Ready-to-post caption", where:"We can post like this every day on",
+  fb:"Facebook Page", ig:"Instagram", tt:"TikTok", yt:"YouTube Shorts",
+  fbs:"Reels + picture posts", igs:"Reels + feed posts", tts:"Short videos", yts:"Shorts on your channel",
+  how:"How it works", s1:"Say yes", s1p:"Reply to our email or message us. No password needed, ever.",
+  s2:"Connect in 2 minutes", s2p:"You approve access with the official Facebook, Google and TikTok buttons. You stay the owner and can remove it anytime.",
+  s3:"Fresh content daily", s3p:"New reels and posts about your business go out every day, with captions and local hashtags.",
+  ctah:"Try it free for 7 days", ctap:"See it working on your own pages before you decide.",
+  start:"Start my free trial", wa:"WhatsApp us", ask:"Ask us anything", foot:"Web Builder · AutoPilot AI",
+  hi:"Hi! 👋 We made this demo for {b}. Want us to post content like this on your pages every day? Ask me anything.",
+  waTxt:"Hi Web Builder, I saw the free demo for {b} ({u}) and I'd like to start the 7-day free trial.", send:"Send", ph:"Type your message…"},
+ ar:{kicker:"عرض مجاني · صُمم لكم", h:"حساباتكم على السوشيال ميديا، ننشر لكم كل يوم — {b}",
+  p:"صممنا هذا الريل والمنشورين من صور موقعكم، فقط لنريكم ما يستطيع نظامنا بالذكاء الاصطناعي فعله لـ {b}. بدون أي التزام.",
+  reel:"الريل الخاص بكم", posts:"منشوراتكم", cap:"نص المنشور جاهز", where:"يمكننا النشر بهذا الشكل يومياً على",
+  fb:"صفحة فيسبوك", ig:"إنستغرام", tt:"تيك توك", yt:"يوتيوب شورتس",
+  fbs:"ريلز ومنشورات صور", igs:"ريلز ومنشورات", tts:"فيديوهات قصيرة", yts:"شورتس على قناتكم",
+  how:"كيف يعمل", s1:"وافقوا", s1p:"ردّوا على رسالتنا أو راسلونا. لا نحتاج أي كلمة مرور.",
+  s2:"الربط في دقيقتين", s2p:"توافقون عبر أزرار فيسبوك وجوجل وتيك توك الرسمية. تبقون المالكين ويمكنكم الإلغاء في أي وقت.",
+  s3:"محتوى جديد يومياً", s3p:"ريلز ومنشورات جديدة عن نشاطكم كل يوم مع نصوص وهاشتاقات محلية.",
+  ctah:"جرّبوه مجاناً لمدة 7 أيام", ctap:"شاهدوه يعمل على صفحاتكم قبل أن تقرروا.",
+  start:"ابدأ التجربة المجانية", wa:"واتساب", ask:"اسألونا", foot:"Web Builder · AutoPilot AI",
+  hi:"مرحباً! 👋 صممنا هذا العرض لـ {b}. هل تريدون أن ننشر محتوى مثل هذا على صفحاتكم يومياً؟ اسألوني أي شيء.",
+  waTxt:"مرحباً Web Builder، شاهدت العرض المجاني لـ {b} ({u}) وأرغب في بدء التجربة المجانية لمدة 7 أيام.", send:"إرسال", ph:"اكتب رسالتك…"}
+};
+const ICO = {
+ fb:'<div class="ic" style="background:#1877f2"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></div>',
+ ig:'<div class="ic" style="background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></div>',
+ tt:'<div class="ic" style="background:#000;border:1px solid #333"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M16 3c.4 2.3 1.9 3.8 4 4v3.2c-1.5 0-2.9-.4-4-1.2V15a6 6 0 1 1-6-6v3.2a2.8 2.8 0 1 0 2.8 2.8V3H16z"/></svg></div>',
+ yt:'<div class="ic" style="background:#ff0000"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M9 7.5v9l7.5-4.5z"/></svg></div>'};
+let L = T.en, D = null, hist = [];
+
+(async () => {
+  try {
+    const r = await fetch(API + "?id=" + encodeURIComponent(id) + me);
+    if (!r.ok) throw 0;
+    D = await r.json();
+    if (D.lang === "ar") { L = T.ar; document.documentElement.dir = "rtl"; document.documentElement.lang = "ar"; }
+    const b = esc(D.business), f = s => s.replace(/\{b\}/g, b);
+    document.title = (D.lang === "ar" ? "عرض مجاني لـ " : "Free social media demo for ") + D.business;
+    document.getElementById("app").innerHTML = `
+<div class="wrap">
+ <div class="top"><div class="brand">Web Builder <span>AutoPilot AI</span></div><div class="pill">${esc(D.city || "")}</div></div>
+ <section class="hero"><small>${L.kicker}</small><h1>${f(L.h)}</h1><p>${f(L.p)}</p></section>
+ <div class="grid">
+  <div><span class="tag">▶ ${L.reel}</span><div class="phone"><video src="${esc(D.reel_url)}" poster="${esc(D.post1_url)}" controls playsinline preload="metadata"></video></div></div>
+  <div><span class="tag">🖼 ${L.posts}</span>
+   <div class="posts"><img src="${esc(D.post1_url)}" alt="Post 1 for ${b}"><img src="${esc(D.post2_url)}" alt="Post 2 for ${b}"></div>
+   ${D.caption ? `<span class="tag" style="margin-top:16px">✍️ ${L.cap}</span><div class="cap">${esc(D.caption)}</div>` : ""}
+  </div>
+ </div>
+ <h2>${L.where}</h2>
+ <div class="plats">${["fb","ig","tt","yt"].map(k => `<div class="plat">${ICO[k]}<b>${L[k]}</b><span>${L[k+"s"]}</span></div>`).join("")}</div>
+ <h2>${L.how}</h2>
+ <div class="steps">${[1,2,3].map(n => `<div class="step"><i>0${n}</i><b> ${L["s"+n]}</b><p>${L["s"+n+"p"]}</p></div>`).join("")}</div>
+ <div class="cta"><h3>${L.ctah}</h3><p>${L.ctap}</p>
+  <div class="btns"><button class="btn y" id="startBtn">${L.start}</button>
+  <a class="btn g" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent(L.waTxt.replace("{b}", D.business).replace("{u}", location.href.split("?")[0]))}">${L.wa}</a></div></div>
+ <footer>${L.foot}</footer>
+</div>`;
+    document.getElementById("app").hidden = false;
+    document.getElementById("load").remove();
+    const cb = document.getElementById("chatBtn"); cb.hidden = false;
+    document.getElementById("chatLbl").textContent = L.ask;
+    document.getElementById("chatI").placeholder = L.ph; document.getElementById("chatS").textContent = L.send;
+    add("b", L.hi.replace("{b}", D.business));
+    cb.onclick = () => toggle();
+    document.getElementById("startBtn").onclick = () => { toggle(true); send(D.lang === "ar" ? "أرغب في بدء التجربة المجانية لمدة 7 أيام" : "I'd like to start the free 7-day trial"); };
+  } catch (e) {
+    document.getElementById("load").innerHTML = '<div style="text-align:center"><h1 style="font-size:28px;color:#fff">Demo not found</h1><p>This link is not valid.</p></div>';
+  }
+})();
+
+function toggle(open) { const c = document.getElementById("chat"); c.classList.toggle("open", open ?? !c.classList.contains("open")); }
+document.getElementById("chatX").onclick = () => toggle(false);
+function add(who, text) {
+  const d = document.createElement("div"); d.className = "m " + who; d.textContent = text;
+  const box = document.getElementById("msgs"); box.appendChild(d); box.scrollTop = box.scrollHeight; return d;
+}
+let convId = null;
+async function send(text) {
+  text = text.trim(); if (!text || !D) return;
+  add("u", text); hist.push({ role: "user", content: text });
+  const wait = add("b", "…");
+  try {
+    const r = await fetch(CHAT, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: hist, channel: "autopilot", ap_id: D.id, conversation_id: convId || undefined }) });
+    const j = await r.json();
+    wait.textContent = j.reply || "Sorry, please try again or message us on WhatsApp.";
+    if (j.conversation_id) convId = j.conversation_id;
+    if (j.reply) hist.push({ role: "assistant", content: j.reply });
+  } catch { wait.textContent = "Sorry, please message us on WhatsApp: +92 307 5267349"; }
+}
+document.getElementById("chatF").onsubmit = e => { e.preventDefault(); const i = document.getElementById("chatI"); send(i.value); i.value = ""; };
+</script>
+</body>
+</html>
